@@ -1,0 +1,36 @@
+{
+  "name": "d3-bar",
+  "version": "0.0.1",
+  "description": "D3 bar chart",
+  "keywords": [
+    "d3",
+    "bar"
+  ],
+  "author": "kawhi <kawhi_site@163.com>",
+  "homepage": "https://github.com/kawhi66/think-ui",
+  "license": "MIT",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.yarnpkg.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kawhi66/think-ui.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/kawhi66/think-ui/issues"
+  },
+  "dependencies": {
+    "d3": "^5.9.7"
+  }
+}

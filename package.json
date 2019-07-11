@@ -1,0 +1,24 @@
+{
+  "name": "think-ui",
+  "version": "0.0.1",
+  "description": "Useful ui-components",
+  "main": "index.js",
+  "repository": "git@github.com:kawhi66/think-ui.git",
+  "author": "https://kawhi.site",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "lerna": "lerna",
+    "start": "webpack-dev-server"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^3.2.0",
+    "lerna": "^3.15.0",
+    "vue": "^2.6.10",
+    "vue-loader": "^15.7.0",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.35.3",
+    "webpack-cli": "^3.3.5",
+    "webpack-dev-server": "^3.7.2"
+  }
+}
