@@ -1,6 +1,6 @@
 # `d3-bar`
 
-> TODO: description
+Bar component based on d3, support vue for now.
 
 ## Usage
 
