@@ -1,37 +1,75 @@
 <template>
   <div>
-    <h1>hello world</h1>
+    <header>
+      <h1>hello world</h1>
+      <button @click="test">test</button>
+    </header>
     <svg ref="a" class="chart" />
   </div>
 </template>
 
-<script>
-import Chart from "./d3-bar";
-
-const gen = n => {
-  const series = [];
-  for (var i = 0, variance = 0, value; i < n; i++) {
-    variance += (Math.random() - 0.5) / 10;
-    const value = Math.abs(Math.cos(i / 100) + variance);
-    series.push({
-      bin: new Date(Date.now() - i * 3600000),
-      value
-    });
-  }
-  return series;
-};
-
-export default {
+<script lang="ts">
+import * as d3 from "d3";
+import BarChart from "./d3-bar";
+import Vue from "vue";
+export default Vue.extend({
   data() {
-    return {};
+    let a: any;
+    return {
+      a
+    };
+  },
+  methods: {
+    test() {
+      console.log(this.a);
+    }
   },
   mounted() {
-    this.a = new Chart({
-      target: this.$refs.a
+    this.a = new BarChart({
+      element: this.$refs.a
     });
-
-    this.a.render(gen(10));
+    this.a.render([
+      {
+        x: 10,
+        y: 12
+      },
+      {
+        x: 20,
+        y: 30
+      },
+      {
+        x: 30,
+        y: 18
+      },
+      {
+        x: 40,
+        y: 110
+      },
+      {
+        x: 50,
+        y: 110
+      }
+    ]);
   }
-};
+});
 </script>
+
+<style lang="less">
+svg.wrapper {
+  // fill: aqua;
+  // g.inner {
+  // }
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+}
+.axis text {
+  font-family: sans-serif;
+  font-size: 11px;
+}
+</style>
+
 

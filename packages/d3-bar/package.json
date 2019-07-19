@@ -31,6 +31,8 @@
     "url": "https://github.com/kawhi66/think-ui/issues"
   },
   "dependencies": {
-    "d3": "^5.9.7"
+    "@types/d3": "^5.7.2",
+    "d3": "^5.9.7",
+    "d3-selection": "^1.4.0"
   }
 }

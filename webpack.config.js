@@ -16,15 +16,23 @@ module.exports = {
         rules: [{
             test: /\.vue$/,
             loader: 'vue-loader'
+        }, {
+            test: /\.ts$/,
+            loader: 'ts-loader',
+            options: { appendTsSuffixTo: [/\.vue$/] }
+        }, {
+            test: /\.less$/,
+            use: ["style-loader", "css-loader", "less-loader"]
         }]
     },
     resolve: {
+        extensions: ['.ts', '.js']
     },
-    devtool: 'source-map',
+    devtool: 'inline-source-map',
     devServer: {
         hot: true,
         open: true,
-        port: 3000
+        port: 3001
     },
     plugins: [
         new HtmlWebpackPlugin({
