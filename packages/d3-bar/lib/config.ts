@@ -1,3 +1,8 @@
+interface Axis {
+  type: string;
+  data: Array<string>;
+}
+
 interface Margin {
   top: number;
   right: number;
@@ -6,24 +11,29 @@ interface Margin {
 }
 
 export interface Config {
-  element: any;
-  width: number;
-  height: number;
-  barPadding: number; // padding between bars
-  axis: boolean; // show axis
-  margin: Margin;
+  element: any; // TODO ???
+  width: number; // width of chart container
+  height: number; // height of chart container
+  barWidth: number; // width of bar
+  axis: boolean; // show axis or not
+  xAxis?: Axis; // x - axis
+  margin: Margin; // margin of chart area
 }
 
 export const defaults: Config = {
   element: "#chart",
   width: 500,
   height: 130,
-  barPadding: 50,
+  barWidth: 32,
   axis: true,
+  xAxis: {
+    type: "category",
+    data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+  },
   margin: { top: 15, right: 15, bottom: 35, left: 60 }
 };
 
 export interface Atom {
-  x: number;
+  x: string;
   y: number;
 }
