@@ -12,79 +12,86 @@ export default class BarChart {
   public chart: any;
   public w: number = 0;
   public h: number = 0;
+  public step: number = 0;
   public x: any;
   public y: any;
 
   init() {
-    const { element, width, height, axis, margin } = this._options_;
+    const { element, width, height, barWidth, axis, xAxis, paddingOuter, margin } = this._options_;
+    if (axis && xAxis && xAxis.type === "category") {
+      this.w = width - margin.left - margin.right;
+      this.h = height - margin.top - margin.bottom;
+      if (paddingOuter) {
+        this.step = (this.w - barWidth * paddingOuter * 2) / xAxis.data.length;
+      } else {
+        this.step = this.w / xAxis.data.length;
+      }
+    }
+
     this.chart = d3
       .select(element)
       .attr("width", width)
       .attr("height", height)
-      .attr("class", "wrapper");
-
-    if (axis) {
-      this.w = width - margin.left - margin.right;
-      this.h = height - margin.top - margin.bottom;
-    }
-
-    this.chart
+      .attr("class", "wrapper")
       .append("g")
-      .attr("width", this.w)
-      .attr("height", this.h)
-      .attr("class", "inner")
       .attr("transform", `translate(${margin.left}, ${margin.top})`);
   }
 
   renderAxis(data: Atom[] = []) {
-    const { w, h } = this;
-    const xMax: number = d3.max(data, (d: Atom) => d.x) || 0;
-    const xScale = d3
-      .scaleLinear()
-      .domain([0, xMax + 5]) // TODO: 避免水平方向溢出
-      .range([0, w]);
-    this.x = xScale;
-    const xAxis = d3.axisBottom(xScale).ticks(5);
-    this.chart
-      .select("g.inner")
-      .append("g")
-      .attr("class", "axis")
-      .attr("transform", `translate(0, ${h})`)
-      .call(xAxis);
+    const { _options_, chart, w, h } = this;
+    const { barWidth, xAxis, paddingOuter } = _options_;
+    if (xAxis && xAxis.type === "category") {
+      this.x = d3
+        .scaleBand()
+        .domain(xAxis.data)
+        .rangeRound([0, w])
+        .paddingInner(1 - barWidth / this.step)
+        .paddingOuter(paddingOuter || 0);
+      chart
+        .append("g")
+        .attr("class", "axis x-axis")
+        .attr("transform", `translate(0, ${h})`)
+        .call(d3.axisBottom(this.x));
 
-    const yMax: number = d3.max(data, (d: Atom) => d.y) || 0;
-    const yScale = d3
-      .scaleLinear()
-      .domain([yMax, 0])
-      .range([0, h]);
-    this.y = yScale;
-    const yAxis = d3.axisLeft(yScale).ticks(5);
-    this.chart
-      .select("g.inner")
-      .append("g")
-      .attr("class", "axis")
-      .call(yAxis);
+      const yMax: number = d3.max(data, (d: Atom) => d.y) || 0;
+      this.y = d3
+        .scaleLinear()
+        .domain([yMax, 0])
+        .range([0, h]);
+      this.chart
+        .append("g")
+        .attr("class", "axis y-axis")
+        .call(
+          d3
+            .axisLeft(this.y)
+            .ticks(2)
+            .tickValues([0, yMax])
+        );
+    }
   }
 
   renderBars(data: Atom[] = []) {
-    const { _options_, w, h } = this;
-    const { barPadding } = _options_;
-    const barWidth: number = w / data.length - barPadding;
-    this.chart // render bars
-      .select("g.inner")
-      .selectAll("rect")
-      .data(data)
-      .enter()
+    const { _options_, chart, h, x, y } = this;
+    const { barWidth } = _options_;
+    const bar = chart.selectAll(".bar").data(data);
+    bar
+      .enter() // enter
       .append("rect")
+      .merge(bar) // update
+      .attr("class", "bar")
       .attr("width", barWidth)
-      .attr("height", (d: Atom) => h - this.y(d.y))
-      .attr("x", (d: Atom) => this.x(d.x))
-      .attr("y", (d: Atom) => this.y(d.y))
-      .attr("transform", `translate(${-barWidth / 2}, 0)`);
+      .attr("height", (d: Atom) => h - y(d.y))
+      .attr("x", (d: Atom) => x(d.x))
+      .attr("y", (d: Atom) => y(d.y));
+    bar.exit().remove(); // exit
   }
 
   render(data: Atom[] = []) {
     this.renderAxis(data);
+    this.renderBars(data);
+  }
+
+  update(data: Atom[] = []) {
     this.renderBars(data);
   }
 }

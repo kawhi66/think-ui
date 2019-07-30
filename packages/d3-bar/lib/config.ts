@@ -1,4 +1,4 @@
-interface Axis {
+export interface Axis {
   type: string;
   data: Array<string>;
 }
@@ -17,6 +17,7 @@ export interface Config {
   barWidth: number; // width of bar
   axis: boolean; // show axis or not
   xAxis?: Axis; // x - axis
+  paddingOuter?: number; // d3.scaleBand().paddingOuter([padding])
   margin: Margin; // margin of chart area
 }
 
@@ -30,6 +31,7 @@ export const defaults: Config = {
     type: "category",
     data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
   },
+  paddingOuter: 0.1,
   margin: { top: 15, right: 15, bottom: 35, left: 60 }
 };
 

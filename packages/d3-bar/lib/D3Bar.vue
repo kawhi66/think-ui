@@ -1,11 +1,5 @@
 <template>
-  <div>
-    <header>
-      <h1>hello world</h1>
-      <button @click="test">test</button>
-    </header>
-    <svg ref="a" class="chart" />
-  </div>
+  <svg ref="a" />
 </template>
 
 <script lang="ts">
@@ -19,35 +13,40 @@ export default Vue.extend({
       a
     };
   },
-  methods: {
-    test() {
-      console.log(this.a);
-    }
-  },
   mounted() {
     this.a = new BarChart({
-      element: this.$refs.a
+      element: this.$refs.a,
+      barWidth: 20,
+      paddingOuter: 0.3
     });
     this.a.render([
       {
-        x: 10,
+        x: "Mon",
         y: 12
       },
       {
-        x: 20,
+        x: "Tue",
         y: 30
       },
       {
-        x: 30,
+        x: "Wed",
         y: 18
       },
       {
-        x: 40,
+        x: "Thu",
         y: 110
       },
       {
-        x: 50,
-        y: 110
+        x: "Fri",
+        y: 200
+      },
+      {
+        x: "Sat",
+        y: 118
+      },
+      {
+        x: "Sun",
+        y: 64
       }
     ]);
   }
