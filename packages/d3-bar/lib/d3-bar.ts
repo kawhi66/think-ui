@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { Config, defaults, Atom } from "./config";
+import { Atom, Config, defaults } from "./config";
 
 export default class BarChart {
   private _options_: Config = defaults;

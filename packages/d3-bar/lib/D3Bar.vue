@@ -1,56 +1,82 @@
 <template>
-  <svg ref="a" />
+  <svg ref="chart" />
 </template>
 
-<script lang="ts">
-import * as d3 from "d3";
+<script>
 import BarChart from "./d3-bar";
-import Vue from "vue";
-export default Vue.extend({
+import Vue from "vue/dist/vue.esm";
+import { Atom, Axis, Margin, Config, defaults } from "./config";
+const { width, height, barWidth, axis, xAxis, paddingOuter, margin } = defaults;
+export default {
   data() {
-    let a: any;
     return {
-      a
+      chart: new BarChart({
+        element: this.$refs.chart
+      })
     };
   },
-  mounted() {
-    this.a = new BarChart({
-      element: this.$refs.a,
-      barWidth: 20,
-      paddingOuter: 0.3
-    });
-    this.a.render([
-      {
-        x: "Mon",
-        y: 12
-      },
-      {
-        x: "Tue",
-        y: 30
-      },
-      {
-        x: "Wed",
-        y: 18
-      },
-      {
-        x: "Thu",
-        y: 110
-      },
-      {
-        x: "Fri",
-        y: 200
-      },
-      {
-        x: "Sat",
-        y: 118
-      },
-      {
-        x: "Sun",
-        y: 64
+  props: {
+    width: {
+      type: Number,
+      default: width
+    },
+    height: {
+      type: Number,
+      default: height
+    },
+    barWidth: {
+      type: Number,
+      default: barWidth
+    },
+    axis: {
+      type: Boolean,
+      default: axis
+    },
+    xAxis: {
+      type: Object,
+      default() {
+        return xAxis;
       }
-    ]);
+    },
+    paddingOuter: {
+      type: Number,
+      default: paddingOuter
+    },
+    margin: {
+      type: Object,
+      default() {
+        return margin;
+      }
+    },
+    barSeries: {
+      type: [Array, Object], // TODO TS2345
+      default() {
+        return xAxis.data.map(item => ({
+          x: item,
+          y: Math.ceil(Math.random() * 100)
+        }));
+      }
+    }
+  },
+  watch: {
+    barSeries(newVal) {
+      this.chart.update(newVal);
+    }
+  },
+  mounted() {
+    this.chart = new BarChart({
+      element: this.$refs.chart,
+      width: this.width,
+      height: this.height,
+      barWidth: this.barWidth,
+      axis: this.axis,
+      xAxis: this.xAxis,
+      paddingOuter: this.paddingOuter,
+      margin: this.margin
+    });
+    this.chart.render(this.barSeries);
   }
-});
+};
 </script>
 
 <style lang="less">
