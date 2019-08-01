@@ -16,7 +16,7 @@ export interface Margin {
 }
 
 export interface Config {
-  element: any; // TODO ???
+  element: any; // element
   width: number; // width of chart container
   height: number; // height of chart container
   barWidth: number; // width of bar

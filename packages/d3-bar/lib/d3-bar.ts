@@ -2,13 +2,13 @@ import * as d3 from "d3";
 import { Atom, Config, defaults } from "./config";
 
 export default class BarChart {
-  private _options_: Config = defaults;
-  private _data_: Atom[] = [];
   constructor(options: {}) {
-    Object.assign(this._options_, options);
+    Object.assign(this.options, options);
     this.init();
   }
 
+  public options: Config = defaults;
+  public data: Atom[] = [];
   public chart: any;
   public w: number = 0;
   public h: number = 0;
@@ -17,7 +17,7 @@ export default class BarChart {
   public y: any;
 
   init() {
-    const { element, width, height, barWidth, barPadding, axis, xAxis, margin } = this._options_;
+    const { element, width, height, barWidth, barPadding, axis, xAxis, margin } = this.options;
     if (axis && xAxis && xAxis.type === "category") {
       this.w = width - margin.left - margin.right;
       this.h = height - margin.top - margin.bottom;
@@ -33,10 +33,14 @@ export default class BarChart {
       .attr("transform", `translate(${margin.left}, ${margin.top})`);
   }
 
-  renderAxis(data: Atom[] = []) {
-    const { _options_, chart, w, h, step } = this;
-    const { barPadding, xAxis } = _options_;
-    const paddingOuter = (w - step * xAxis.data.length + barPadding) / step / 2; // step * paddingOuter * 2 + step * len - barPadding = w; barWidth + barPadding = step;
+  renderAxis() {
+    const { options, data, chart, w, h, step } = this;
+    const { barPadding, xAxis } = options;
+
+    // barWidth + barPadding = step;
+    // step * paddingOuter * 2 + step * len - barPadding = w;
+    const paddingOuter = (w - step * xAxis.data.length + barPadding) / step / 2;
+
     if (xAxis && xAxis.type === "category") {
       this.x = d3
         .scaleBand()
@@ -67,9 +71,9 @@ export default class BarChart {
     }
   }
 
-  renderBars(data: Atom[] = []) {
-    const { _options_, chart, h, x, y } = this;
-    const { barWidth } = _options_;
+  renderBars() {
+    const { options, data, chart, h, x, y } = this;
+    const { barWidth } = options;
     const bar = chart.selectAll(".bar").data(data);
     bar
       .enter() // enter
@@ -80,21 +84,23 @@ export default class BarChart {
       .attr("height", (d: Atom) => h - y(d.y))
       .attr("x", (d: Atom) => x(d.x))
       .attr("y", (d: Atom) => y(d.y))
-      .on("mouseenter", function() {
-        // d3.select(this).style("opacity", 0.7);
+      .on("mouseenter", function(this: HTMLElement) {
+        d3.select(this).style("opacity", 0.7);
       })
-      .on("mouseout", function(d: Atom) {
-        // d3.select(this).style("opacity", 1);
+      .on("mouseout", function(this: HTMLElement) {
+        d3.select(this).style("opacity", 1);
       });
     bar.exit().remove(); // exit
   }
 
   render(data: Atom[] = []) {
-    this.renderAxis(data);
-    this.renderBars(data);
+    this.data = data;
+    this.renderAxis();
+    this.renderBars();
   }
 
   update(data: Atom[] = []) {
-    this.renderBars(data);
+    this.data = data;
+    this.renderBars();
   }
 }
