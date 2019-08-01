@@ -17,15 +17,11 @@ export default class BarChart {
   public y: any;
 
   init() {
-    const { element, width, height, barWidth, axis, xAxis, paddingOuter, margin } = this._options_;
+    const { element, width, height, barWidth, barPadding, axis, xAxis, margin } = this._options_;
     if (axis && xAxis && xAxis.type === "category") {
       this.w = width - margin.left - margin.right;
       this.h = height - margin.top - margin.bottom;
-      if (paddingOuter) {
-        this.step = (this.w - barWidth * paddingOuter * 2) / xAxis.data.length;
-      } else {
-        this.step = this.w / xAxis.data.length;
-      }
+      this.step = barWidth + barPadding;
     }
 
     this.chart = d3
@@ -38,15 +34,16 @@ export default class BarChart {
   }
 
   renderAxis(data: Atom[] = []) {
-    const { _options_, chart, w, h } = this;
-    const { barWidth, xAxis, paddingOuter } = _options_;
+    const { _options_, chart, w, h, step } = this;
+    const { barPadding, xAxis } = _options_;
+    const paddingOuter = (w - step * xAxis.data.length + barPadding) / step / 2; // step * paddingOuter * 2 + step * len - barPadding = w; barWidth + barPadding = step;
     if (xAxis && xAxis.type === "category") {
       this.x = d3
         .scaleBand()
         .domain(xAxis.data)
         .rangeRound([0, w])
-        .paddingInner(1 - barWidth / this.step)
-        .paddingOuter(paddingOuter || 0);
+        .paddingInner(barPadding / step)
+        .paddingOuter(paddingOuter);
       chart
         .append("g")
         .attr("class", "axis x-axis")

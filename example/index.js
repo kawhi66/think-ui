@@ -7,10 +7,19 @@ new Vue({
   template: `
     <div>
       <header class="header">
-        <p>Think UI</p>
+        <p class="title">Think UI d3 bar component</p>
         <button @click="test">Animate</button>
       </header>
-      <bar-chart ref="bar-chart" :width="640" :height="320" :bar-width="24" :padding-outer="0.5" :bar-series="barSeries"></bar-chart>
+      <article class="main">
+        <section>
+          <p class="title">Default Config</p>
+          <bar-chart></bar-chart>
+        </section>
+        <section>
+          <p class="title">Custom Config</p>
+          <bar-chart :width="640" :height="320" :bar-width="32" :bar-padding="15" :x-axis="xAxis" :bar-series="barSeries"></bar-chart>
+        </section>
+      </article>
     </div>
   `,
   components: {
@@ -18,18 +27,24 @@ new Vue({
   },
   data() {
     return {
-      barSeries: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(item => ({
+      xAxis: {
+        type: "category",
+        data: ["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."]
+      },
+      series: []
+    }
+  },
+  computed: {
+    barSeries() {
+      return this.xAxis.data.map((item, index) => ({
         x: item,
-        y: 100
+        y: this.series[index] || 100
       }))
     }
   },
   methods: {
     test() {
-      this.barSeries = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(item => ({
-        x: item,
-        y: Math.ceil(Math.random() * 100)
-      }))
+      this.series = this.xAxis.data.map(item => Math.ceil(Math.random() * 100))
     }
   }
 }).$mount('#app')

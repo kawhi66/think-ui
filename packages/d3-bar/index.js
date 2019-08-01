@@ -1,3 +1,2 @@
 'use strict';
-
-export { default } from "./lib/D3Bar.vue"
+export { default } from "./D3Bar.vue"

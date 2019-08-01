@@ -3,16 +3,22 @@
 </template>
 
 <script>
-import BarChart from "./d3-bar";
-import Vue from "vue/dist/vue.esm";
-import { Atom, Axis, Margin, Config, defaults } from "./config";
-const { width, height, barWidth, axis, xAxis, paddingOuter, margin } = defaults;
+import BarChart from "./lib/d3-bar";
+import { defaults } from "./lib/config";
+const {
+  width,
+  height,
+  barWidth,
+  barPadding,
+  axis,
+  xAxis,
+  margin,
+  barSeries
+} = defaults;
 export default {
   data() {
     return {
-      chart: new BarChart({
-        element: this.$refs.chart
-      })
+      chart: null
     };
   },
   props: {
@@ -28,6 +34,10 @@ export default {
       type: Number,
       default: barWidth
     },
+    barPadding: {
+      type: Number,
+      default: barPadding
+    },
     axis: {
       type: Boolean,
       default: axis
@@ -38,10 +48,6 @@ export default {
         return xAxis;
       }
     },
-    paddingOuter: {
-      type: Number,
-      default: paddingOuter
-    },
     margin: {
       type: Object,
       default() {
@@ -49,7 +55,7 @@ export default {
       }
     },
     barSeries: {
-      type: [Array, Object], // TODO TS2345
+      type: [Array, Object],
       default() {
         return xAxis.data.map(item => ({
           x: item,
@@ -59,8 +65,8 @@ export default {
     }
   },
   watch: {
-    barSeries(newVal) {
-      this.chart.update(newVal);
+    barSeries(data) {
+      this.chart.update(data);
     }
   },
   mounted() {
@@ -69,6 +75,7 @@ export default {
       width: this.width,
       height: this.height,
       barWidth: this.barWidth,
+      barPadding: this.barPadding,
       axis: this.axis,
       xAxis: this.xAxis,
       paddingOuter: this.paddingOuter,
@@ -78,23 +85,5 @@ export default {
   }
 };
 </script>
-
-<style lang="less">
-svg.wrapper {
-  // fill: aqua;
-  // g.inner {
-  // }
-}
-.axis path,
-.axis line {
-  fill: none;
-  stroke: black;
-  shape-rendering: crispEdges;
-}
-.axis text {
-  font-family: sans-serif;
-  font-size: 11px;
-}
-</style>
 
 

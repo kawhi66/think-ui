@@ -33,7 +33,6 @@
   "dependencies": {
     "@types/d3": "^5.7.2",
     "d3": "^5.9.7",
-    "d3-selection": "^1.4.0",
-    "vue": "^2.6.10"
+    "d3-selection": "^1.4.0"
   }
 }
