@@ -79,7 +79,13 @@ export default class BarChart {
       .attr("width", barWidth)
       .attr("height", (d: Atom) => h - y(d.y))
       .attr("x", (d: Atom) => x(d.x))
-      .attr("y", (d: Atom) => y(d.y));
+      .attr("y", (d: Atom) => y(d.y))
+      .on("mouseenter", function() {
+        // d3.select(this).style("opacity", 0.7);
+      })
+      .on("mouseout", function(d: Atom) {
+        // d3.select(this).style("opacity", 1);
+      });
     bar.exit().remove(); // exit
   }
 
