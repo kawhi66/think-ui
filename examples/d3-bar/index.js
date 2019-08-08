@@ -1,4 +1,4 @@
-import BarChart from "../packages/d3-bar/index.js"
+import BarChart from "../../packages/d3-bar/index.js"
 import Vue from "vue/dist/vue.esm"
 
 Vue.config.productionTip = false
@@ -11,10 +11,6 @@ new Vue({
         <button @click="test">Animate</button>
       </header>
       <article class="main">
-        <section>
-          <p class="title">Default Config</p>
-          <bar-chart></bar-chart>
-        </section>
         <section>
           <p class="title">Custom Config</p>
           <bar-chart :width="640" :height="320" :bar-width="32" :bar-padding="15" :x-axis="xAxis" :bar-series="barSeries"></bar-chart>

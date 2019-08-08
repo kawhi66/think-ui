@@ -1,0 +1,33 @@
+{
+  "name": "large-list",
+  "version": "0.0.1",
+  "description": "list render with massive data",
+  "keywords": [
+    "large",
+    "list"
+  ],
+  "author": "kawhi <kawhi_site@163.com>",
+  "homepage": "https://kawhi.site",
+  "license": "MIT",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.yarnpkg.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kawhi66/think-ui.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/kawhi66/think-ui/issues"
+  }
+}

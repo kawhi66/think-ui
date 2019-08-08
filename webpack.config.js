@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
-    entry: './example/index.js',
+    entry: './examples/large-list/index.js',
     context: path.resolve(__dirname),
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -36,7 +36,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: "./example/index.html"
+            template: "./examples/large-list/index.html"
         }),
         new VueLoaderPlugin()
     ]
